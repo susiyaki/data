@@ -1,5 +1,5 @@
 import pluralize from 'pluralize'
-import { RestContext, RestRequest, ResponseResolver, rest } from 'msw'
+import { RestContext, RestRequest, ResponseResolver, rest, PathParams } from 'msw'
 import {
   Entity,
   ModelDictionary,
@@ -55,7 +55,7 @@ export function getResponseStatusByErrorType(
   }
 }
 
-export function withErrors<RequestBodyType = any, RequestParamsType = any>(
+export function withErrors<RequestBodyType = any, RequestParamsType extends PathParams = any>(
   handler: ResponseResolver<
     RestRequest<RequestBodyType, RequestParamsType>,
     RestContext
@@ -120,11 +120,11 @@ export function parseQueryParams<ModelName extends string>(
 export function generateRestHandlers<
   Dictionary extends ModelDictionary,
   ModelName extends string,
->(
-  modelName: ModelName,
-  modelDefinition: ModelDefinition,
-  model: ModelAPI<Dictionary, ModelName>,
-  baseUrl: string = '',
+  >(
+    modelName: ModelName,
+    modelDefinition: ModelDefinition,
+    model: ModelAPI<Dictionary, ModelName>,
+    baseUrl: string = '',
 ) {
   const primaryKey = findPrimaryKey(modelDefinition)!
   const primaryKeyValue = (
