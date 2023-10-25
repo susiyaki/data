@@ -299,6 +299,7 @@ export function generateGraphQLHandlers<
         variableValues: req.variables,
       })
 
+      // @ts-ignore
       return res(ctx.data(result.data!), ctx.errors(result.errors))
     }),
   ]
